@@ -5,11 +5,27 @@ const resDay = document.getElementById('res-day')
 const resMon = document.getElementById('res-month')
 const resYea = document.getElementById('res-year')
 
-function send(){
-    calc()
+function send() {
+    const now = new Date();
+    
+    let anos = now.getFullYear() - year.value;
+    let meses = now.getMonth() - mon.value;
+    let dias = now.getDate() - day.value;
+
+    // Ajustar anos se necessário
+    if (meses <= 0 || (meses === 0 && dias < 0)) {
+        anos--;
+        meses += 12;
+    }
+
+    // Ajustar meses se necessário
+    if (dias < 0) {
+        const ultimoDiaMesAnterior = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+        dias += ultimoDiaMesAnterior;
+        meses--;
+    }
+
+    return { anos, meses, dias };
 }
-function calc(){
-    const now = new Date()
-    let s = now.getFullYear() - year.value
-    resYea.innerHTML =  `${s} Years`
-}
+
+console.log(send());
